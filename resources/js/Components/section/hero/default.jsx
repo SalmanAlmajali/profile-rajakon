@@ -25,7 +25,7 @@ export default function Hero({ heroes, className }) {
 					}}
 					spaceBetween={10}
 					grabCursor={true}
-					loop={true}
+					loop={false}
 					autoplay={{
 						delay: 5000,
 						disableOnInteraction: false,
