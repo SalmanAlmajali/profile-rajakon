@@ -1,67 +1,64 @@
 import React from 'react';
 
-const galleryItems = [
-  { src: '/images/gallery/1.jpeg', },
-  { src: '/images/gallery/2.jpeg', },
-  { src: '/images/gallery/3.jpeg', },
-  { src: 'public/images/gallery/maintenance monitoring.jpeg', },
-  { src: '/images/gallery/maintenannce monitoring2.jpeg', },
-  { src: '/images/gallery/maintenannce monitoring3.jpeg', },
-  { src: '/images/gallery/rapat bapenda.jpeg', },
-  { src: '/images/gallery/rapat bapenda2.jpeg', },
-  { src: '/images/gallery/rapat bapenda3.jpeg', },
-  { src: '/images/gallery/rapat bapenda4.jpeg', },
-  { src: '/images/gallery/rapat bapenda5.jpeg', },
-  // tambah gambar lain sesuai kebutuhan
-];
-
-const Dokumentasi = () => {
+const Gallery = ({ galleries = [] }) => {
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        {/* Header */}
+    <section className="py-16 md:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Header persis seperti live site */}
         <div className="text-center mb-12 md:mb-16">
-          <span className="inline-block px-5 py-1.5 text-sm md:text-base font-semibold text-blue-600 bg-blue-50 rounded-full mb-4 tracking-wide">
+          <span className="inline-block px-4 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full mb-4">
             DOKUMENTASI
           </span>
-
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Dokumentasi
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+            Dokumentasi Proyek
           </h2>
-
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="mt-4 text-lg text-gray-600">
             Dokumentasi pekerjaan lapangan dan aplikasi
           </p>
         </div>
 
-        {/* Masonry layout pakai columns */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 md:gap-6 space-y-5 md:space-y-6">
-          {galleryItems.map((item, index) => (
-            <div 
-              key={index} 
-              className="break-inside-avoid mb-5 md:mb-6 group relative overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-white"
-            >
-              <img
-                src={item.src}
-                className="w-full h-auto object-cover rounded-t-lg transition-transform duration-500 group-hover:scale-[1.02]"
-                loading="lazy"
-              />
-            </div>
-          ))}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6">
+          {galleries.length > 0 ? (
+            galleries.map((item) => (
+              <div 
+                key={item.id} 
+                className="break-inside-avoid mb-4 md:mb-6"
+              >
+                <img
+                  className="w-full h-auto object-cover rounded-lg"
+                  src={item.image}
+                  alt={item.title || 'Dokumentasi proyek'}
+                  loading="lazy"
+                />
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 text-lg col-span-full py-12">
+              Belum ada dokumentasi yang ditambahkan.
+            </p>
+          )}
         </div>
 
-        {/* Optional CTA */}
-        {/* <div className="text-center mt-12 md:mt-16">
+        {/* Tombol CTA */}
+        <div className="text-center mt-12 md:mt-16">
           <a
             href="#kontak"
-            className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors shadow-md hover:shadow-lg"
+            className="
+              inline-flex items-center px-8 py-4
+              text-lg font-medium text-white
+              bg-blue-600 hover:bg-blue-700
+              rounded-full
+              shadow-md
+              transition-all duration-200
+              transform hover:scale-105
+            "
           >
-            Konsultasi Gratis →
+            Lihat Dokumentasi Lengkap →
           </a>
-        </div> */}
+        </div>
       </div>
     </section>
   );
 };
 
-export default Dokumentasi;
+export default Gallery;

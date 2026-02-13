@@ -1,5 +1,5 @@
 import React from 'react';
-import { Head } from '@inertiajs/react'; // kalau pakai Inertia
+import { Head } from '@inertiajs/react';
 
 import Layout from '../Layouts/Layout';
 import AuroraBackground from '../Components/ui/aurora-background';
@@ -12,7 +12,7 @@ import Gallery from '../Components/section/gallery/default';
 import Contact from '../Components/section/contact/default';
 import Footer from '../Components/section/footer/default';
 
-const Index = () => {
+const Index = ({ galleries = [] }) => { 
   return (
     <Layout>
       <Head title="Rajakon - Personal Profile" />
@@ -26,7 +26,7 @@ const Index = () => {
         <Items />
         <Clients />
         <Service />
-        <Gallery />
+        <Gallery galleries={galleries} />
         <Contact />
       </main>
 
