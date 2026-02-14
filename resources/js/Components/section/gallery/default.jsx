@@ -1,62 +1,173 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
+
+const ITEMS_PER_PAGE = 10;
 
 const Gallery = ({ galleries = [] }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const totalPages = Math.ceil(galleries.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentGalleries = galleries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const goToPrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const goToNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const showPrevImage = () => {
+    if (selectedIndex > 0) {
+      setSelectedIndex(selectedIndex - 1);
+    }
+  };
+
+  const showNextImage = () => {
+    if (selectedIndex < galleries.length - 1) {
+      setSelectedIndex(selectedIndex + 1);
+    }
+  };
+
+  const closePreview = () => {
+    setSelectedIndex(null);
+  };
+
+  // ESC + Arrow navigation + Lock scroll
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closePreview();
+      }
+      if (e.key === 'ArrowLeft') {
+        showPrevImage();
+      }
+      if (e.key === 'ArrowRight') {
+        showNextImage();
+      }
+    };
+
+    if (selectedIndex !== null) {
+      document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [selectedIndex]);
+
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header persis seperti live site */}
-        <div className="text-center mb-12 md:mb-16">
-          <span className="inline-block px-4 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full mb-4">
-            DOKUMENTASI
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-            Dokumentasi Proyek
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Dokumentasi pekerjaan lapangan dan aplikasi
-          </p>
+
+        {/* Gallery Grid */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+          {currentGalleries.map((item, index) => (
+            <div
+              key={item.id}
+              className="break-inside-avoid cursor-pointer"
+              onClick={() => setSelectedIndex(startIndex + index)}
+            >
+              <img
+                className="w-full h-auto object-contain rounded-lg bg-gray-100 hover:scale-105 transition-transform duration-300"
+                src={item.image}
+                alt={item.title}
+              />
+            </div>
+          ))}
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6">
-          {galleries.length > 0 ? (
-            galleries.map((item) => (
-              <div 
-                key={item.id} 
-                className="break-inside-avoid mb-4 md:mb-6"
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-12 gap-2">
+            <button
+              onClick={goToPrev}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => goToPage(i + 1)}
+                className={`px-4 py-2 rounded-lg ${
+                  currentPage === i + 1
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100'
+                }`}
               >
-                <img
-                  className="w-full h-auto object-cover rounded-lg"
-                  src={item.image}
-                  alt={item.title || 'Dokumentasi proyek'}
-                  loading="lazy"
-                />
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 text-lg col-span-full py-12">
-              Belum ada dokumentasi yang ditambahkan.
-            </p>
-          )}
-        </div>
+                {i + 1}
+              </button>
+            ))}
 
-        {/* Tombol CTA */}
-        <div className="text-center mt-12 md:mt-16">
-          <a
-            href="#kontak"
-            className="
-              inline-flex items-center px-8 py-4
-              text-lg font-medium text-white
-              bg-blue-600 hover:bg-blue-700
-              rounded-full
-              shadow-md
-              transition-all duration-200
-              transform hover:scale-105
-            "
-          >
-            Lihat Dokumentasi Lengkap →
-          </a>
-        </div>
+            <button
+              onClick={goToNext}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-200 rounded-lg disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* IMAGE PREVIEW MODAL */}
+      {selectedIndex !== null && (
+        <div
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
+          onClick={closePreview}
+        >
+          <div
+            className="relative flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button
+              onClick={closePreview}
+              className="absolute -top-12 right-0 text-white text-2xl hover:scale-110 transition"
+            >
+              <FaTimes />
+            </button>
+
+            {/* Previous */}
+            <button
+              onClick={showPrevImage}
+              disabled={selectedIndex === 0}
+              className="absolute -left-16 text-white text-3xl hover:scale-110 disabled:opacity-30 transition"
+            >
+              <FaChevronLeft />
+            </button>
+
+            {/* Image */}
+            <img
+              src={galleries[selectedIndex].image}
+              alt=""
+              className="max-h-[85vh] max-w-[90vw] rounded-lg shadow-2xl"
+            />
+
+            {/* Next */}
+            <button
+              onClick={showNextImage}
+              disabled={selectedIndex === galleries.length - 1}
+              className="absolute -right-16 text-white text-3xl hover:scale-110 disabled:opacity-30 transition"
+            >
+              <FaChevronRight />
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

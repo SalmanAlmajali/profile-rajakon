@@ -243,3 +243,34 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@keyframes slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-from-left,
+.animate-slide-from-right {
+  animation: slide-from-left 0.7s ease-out forwards;
+}
+
+.animate-slide-from-right {
+  animation: slide-from-right 0.7s ease-out forwards;
+}

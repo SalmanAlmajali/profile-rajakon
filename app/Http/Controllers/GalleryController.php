@@ -73,11 +73,12 @@ class GalleryController extends Controller
     // Hapus gambar
     public function destroy(Gallery $gallery)
     {
-        // Hapus file dari storage
-        if (Storage::disk('public')->exists($gallery->image)) {
+        // Hapus file dari storage kalau path ada dan valid
+        if ($gallery->image && is_string($gallery->image) && Storage::disk('public')->exists($gallery->image)) {
             Storage::disk('public')->delete($gallery->image);
         }
 
+        // Hapus record dari database
         $gallery->delete();
 
         return redirect()->route('admin.gallery.index')
