@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -25,11 +26,20 @@ class HomeController extends Controller
             ];
         });
 
-        // Debug: tampilkan data di browser
-        // dd($mapped); // uncomment kalau ingin cek langsung
+        $partners = Partner::where('is_active', true)
+            ->orderBy('order')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'logo' => Storage::url($item->logo),
+                ];
+            });
 
         return Inertia::render('Index', [
-            'galleries' => $mapped,
+            'galleries' => $galleries,
+            'partners' => $partners,
         ]);
     }
 

@@ -1,6 +1,5 @@
 import { usePage } from '@inertiajs/react'
-import { toast, Toaster } from 'sonner'
-import { useCallback, useEffect } from 'react'
+import { Toaster } from 'sonner'
 import Navbar from '../Components/section/navbar/default';
 
 const Layout = ({ children }) => {
@@ -8,7 +7,15 @@ const Layout = ({ children }) => {
     
     return (
         <div className='font-jakarta'>
-            <Navbar />
+            <Navbar
+                mobileLinks={[
+                    { text: "Tentang", href: "#tentang" },
+                    { text: "Layanan", href: "#layanan" },
+                    { text: "Partners", href: "#partners" },
+                    { text: "Gallery", href: "#gallery" },
+                    { text: "Kontak", href: "#kontak" },
+                ]}
+            />
             {children}
             <Toaster />
         </div>

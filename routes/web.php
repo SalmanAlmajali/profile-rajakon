@@ -15,29 +15,40 @@ Route::get('/', function () {
             if ($hero->hero_image === null) {
                 return $hero;
             }
-
             $hero->hero_image = (str_starts_with($hero->hero_image, 'http://') || str_starts_with($hero->hero_image, 'https://'))
                 ? $hero->hero_image
                 : config('app.url') . "/storage/$hero->hero_image";
             return $hero;
         });
 
-    // Tambahkan ini untuk gallery
     $galleries = \App\Models\Gallery::where('is_active', true)
         ->orderBy('order')
         ->get()
         ->map(function ($item) {
             return [
                 'id' => $item->id,
-                'image' => \Illuminate\Support\Facades\Storage::url($item->image),
+                'image' => Storage::url($item->image),
                 'title' => $item->title ?? null,
                 'year' => $item->year ?? null,
+            ];
+        });
+
+    // ← TAMBAHKAN INI
+    $partners = \App\Models\Partner::where('is_active', true)
+        ->orderBy('order')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'logo' => Storage::url($item->logo),
             ];
         });
 
     return Inertia::render('Index', [
         'heroes' => $heroes,
         'galleries' => $galleries,
+        'partners' => $partners, // ← TAMBAHKAN INI
     ]);
 });
 

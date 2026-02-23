@@ -27,18 +27,22 @@ export default function tabsSchemaComponent({
                 this.tab = queryString.get(tabQueryStringKey)
             }
 
-            this.$watch('tab', () => this.updateQueryString())
+            this.$watch('tab', () => {
+                this.updateQueryString()
+                this.autofocusFields()
+            })
 
             if (!this.tab || !tabs.includes(this.tab)) {
                 this.tab = tabs[activeTab - 1]
             }
 
-            this.unsubscribeLivewireHook = Livewire.hook(
-                'commit',
-                ({ component, commit, succeed, fail, respond }) => {
-                    succeed(({ snapshot, effect }) => {
+            this.autofocusFields()
+
+            this.unsubscribeLivewireHook = Livewire.interceptMessage(
+                ({ message, onSuccess }) => {
+                    onSuccess(() => {
                         this.$nextTick(() => {
-                            if (component.id !== livewireId) {
+                            if (message.component.id !== livewireId) {
                                 return
                             }
 
@@ -188,6 +192,14 @@ export default function tabsSchemaComponent({
             url.searchParams.set(tabQueryStringKey, this.tab)
 
             history.replaceState(null, document.title, url.toString())
+        },
+
+        autofocusFields() {
+            this.$nextTick(() =>
+                this.$el
+                    .querySelector('.fi-sc-tabs-tab.fi-active [autofocus]')
+                    ?.focus(),
+            )
         },
 
         debouncedUpdateTabsWithinDropdown() {
