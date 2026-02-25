@@ -12,8 +12,8 @@ import Rajakon from "../../logos/rajakon";
 const desktopLinks = [
   { text: "Tentang", href: "#tentang" },
   { text: "Layanan", href: "#layanan" },
-  { text: "Partners", href: "#partners" },
-  { text: "Gallery", href: "#gallery" },
+  { text: "Klien", href: "#klien" },
+  { text: "Dokumentasi", href: "#dokumentasi" },
   { text: "Kontak", href: "#kontak" },
 ];
 
@@ -23,8 +23,8 @@ export default function Navbar({
   mobileLinks = [
     { text: "Tentang", href: "#tentang" },
     { text: "Layanan", href: "#layanan" },
-    { text: "Partners", href: "#partners" },
-    { text: "Gallery", href: "#gallery" },
+    { text: "Klien", href: "#klien" },
+    { text: "Dokumentasi", href: "#dokumentasi" },
     { text: "Kontak", href: "#kontak" },
   ],
   actions = [
