@@ -12,25 +12,23 @@ import Gallery from '../Components/section/gallery/default';
 import Contact from '../Components/section/contact/default';
 import Footer from '../Components/section/footer/default';
 
-const Index = ({ galleries = [], partners = [] }) => {
+const Index = (props) => {
+  const { heroes, partners, galleries } = props;
+
   return (
     <Layout>
       <Head title="Rajakon - Personal Profile" />
 
       <AuroraBackground>
-        <Hero />
+        <Hero heroes={heroes} />
       </AuroraBackground>
 
       <main className="relative z-10">
         <About />
         <Items />
-        <div id="partners">
-          <Clients partners={partners} />
-        </div>
+        <Clients partners={partners} />
         <Service />
-        <div id="gallery">
-          <Gallery galleries={galleries} />
-        </div>
+        <Gallery galleries={galleries} />
         <Contact />
       </main>
 
