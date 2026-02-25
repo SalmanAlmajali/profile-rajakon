@@ -98,6 +98,7 @@ return array(
     'Flowframe\\Trend\\Database\\Factories\\' => array($vendorDir . '/flowframe/laravel-trend/database/factories'),
     'Flowframe\\Trend\\' => array($vendorDir . '/flowframe/laravel-trend/src'),
     'Filament\\Widgets\\' => array($vendorDir . '/filament/widgets/src'),
+    'Filament\\Upgrade\\' => array($vendorDir . '/filament/upgrade/src'),
     'Filament\\Tables\\' => array($vendorDir . '/filament/tables/src'),
     'Filament\\Support\\' => array($vendorDir . '/filament/support/src'),
     'Filament\\Schemas\\' => array($vendorDir . '/filament/schemas/src'),

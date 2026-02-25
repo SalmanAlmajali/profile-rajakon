@@ -7,6 +7,8 @@ use Filament\Widgets\FilamentInfoWidget;
 use Filament\Support\Enums\Width;
 use App\Filament\Resources\Heroes\HeroResource;
 use App\Filament\Resources\Kontaks\KontakResource;
+use App\Filament\Resources\Galleries\GalleryResource; // ← tambahkan ini
+use App\Filament\Resources\Partners\PartnerResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,11 +29,13 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            // HAPUS ->resources([...]) dari sini
             ->default()
             ->id('admin')
             ->path('admin')
@@ -77,11 +81,9 @@ class AdminPanelProvider extends PanelProvider
                         NavigationGroup::make('Manage Content')
                             ->items([
                                 ...HeroResource::getNavigationItems(),
+                                ...GalleryResource::getNavigationItems(),
+                                ...PartnerResource::getNavigationItems(), // ← tambahkan ini
                             ]),
-                        // NavigationGroup::make('Master')
-                        //     ->items([
-                        //         // 
-                        //     ]),
                     ]);
             })
             ->databaseNotifications();

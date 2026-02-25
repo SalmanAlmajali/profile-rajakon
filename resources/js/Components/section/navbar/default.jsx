@@ -1,16 +1,21 @@
 import { Menu } from "lucide-react";
-
 import { cn } from "../../../utils/cn";
-
 import { Button } from "../../ui/button";
 import {
   Navbar as NavbarComponent,
   NavbarLeft,
   NavbarRight,
 } from "../../ui/navbar";
-import Navigation from "../../ui/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
 import Rajakon from "../../logos/rajakon";
+
+const desktopLinks = [
+  { text: "Tentang", href: "#tentang" },
+  { text: "Layanan", href: "#layanan" },
+  { text: "Partners", href: "#partners" },
+  { text: "Gallery", href: "#gallery" },
+  { text: "Kontak", href: "#kontak" },
+];
 
 export default function Navbar({
   logo = <Rajakon />,
@@ -18,6 +23,8 @@ export default function Navbar({
   mobileLinks = [
     { text: "Tentang", href: "#tentang" },
     { text: "Layanan", href: "#layanan" },
+    { text: "Partners", href: "#partners" },
+    { text: "Gallery", href: "#gallery" },
     { text: "Kontak", href: "#kontak" },
   ],
   actions = [
@@ -34,7 +41,6 @@ export default function Navbar({
 }) {
   return (
     <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
-      {/* efek blur background */}
       <div className="fade-bottom bg-background/15 absolute left-0 h-24 w-full backdrop-blur-lg" />
 
       <div className="max-w-container relative mx-auto">
@@ -47,11 +53,24 @@ export default function Navbar({
               {logo}
             </a>
 
-            {showNavigation && (customNavigation || <Navigation />)}
+            {showNavigation && (
+              customNavigation || (
+                <nav className="hidden md:flex items-center gap-6 ml-6">
+                  {desktopLinks.map((link, index) => (
+                    <a
+                      key={index}
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.text}
+                    </a>
+                  ))}
+                </nav>
+              )
+            )}
           </NavbarLeft>
 
           <NavbarRight>
-            {/* Desktop actions */}
             {actions.map((action, index) => {
               if (action.isButton) {
                 return (
@@ -68,7 +87,6 @@ export default function Navbar({
                   </Button>
                 );
               }
-
               return (
                 <a
                   key={index}
@@ -80,7 +98,6 @@ export default function Navbar({
               );
             })}
 
-            {/* Mobile menu trigger */}
             <Sheet>
               <SheetTrigger asChild>
                 <Button
@@ -129,7 +146,6 @@ export default function Navbar({
                           </Button>
                         );
                       }
-
                       return (
                         <a
                           key={index}
